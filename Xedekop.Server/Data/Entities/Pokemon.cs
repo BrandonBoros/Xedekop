@@ -39,6 +39,16 @@
         /// </summary>
         public Type[] Types { get; set; } = new Type[2];
 
+        /// <summary>
+        /// The description of the Pokemon.
+        /// </summary>
+        public string Description { get; set; }
+
+        /// <summary>
+        /// The price of the Pokemon.
+        /// </summary>
+        public decimal Price { get; set; }
+
         // pokemon image url
     }
 }
