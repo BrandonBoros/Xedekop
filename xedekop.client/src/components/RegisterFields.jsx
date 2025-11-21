@@ -4,7 +4,8 @@ import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
 import { Button } from "primereact/button";
 
-export default function LoginFields({ navigate }) {
+export default function RegisterFields({ navigate }) {
+    const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -13,32 +14,31 @@ export default function LoginFields({ navigate }) {
     const [isDisabled, setDisabled] = useState(true);
 
     useEffect(() => {
-        setDisabled(!(username && password));
-    }, [username, password]);
+        setDisabled(!(email && username && password));
+    }, [email, username, password]);
 
-    const handleLogin = async () => {
+    const handleRegister = async () => {
         setLoading(true);
         setError("");
 
         try {
-            const response = await api.post("Auth/login", {
+            const response = await api.post("Auth/register", {
+                email,
                 username,
-                password
+                password,
             });
 
             localStorage.setItem("token", response.data.token);
-            navigate("/shop")
+            navigate("/shop");
         } catch (err) {
             const data = err.response?.data;
 
             if (Array.isArray(data)) {
-                setError(data.map(e => e.description).join("\n"));
-            }
-            else if (typeof data === "object") {
-                setError(data.title || "Login failed");
-            }
-            else {
-                setError(data || "Login failed");
+                // Identity errors come as an array of objects
+                const messages = data.map(e => e.description).join("\n");
+                setError(messages);
+            } else {
+                setError(data || "Registration failed");
             }
         }
 
@@ -48,6 +48,11 @@ export default function LoginFields({ navigate }) {
     return (
         <>
             {error && <p style={{ color: "red" }}>{error}</p>}
+
+            <div className="p-inputgroup flex-1">
+                <span className="p-inputgroup-addon">@</span>
+                <InputText value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
+            </div>
 
             <div className="p-inputgroup flex-1">
                 <span className="p-inputgroup-addon">
@@ -62,12 +67,12 @@ export default function LoginFields({ navigate }) {
             </div>
 
             <Button
-                label="Login"
-                icon="pi pi-check"
+                label="Register"
+                icon="pi pi-user-plus"
                 raised
                 loading={loading}
                 disabled={isDisabled}
-                onClick={handleLogin}
+                onClick={handleRegister}
             />
         </>
     );
