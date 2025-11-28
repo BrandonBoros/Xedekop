@@ -5,6 +5,8 @@ using Xedekop.Server.Data.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Xedekop.Server.Data.Repositories;
+using System.Threading.Tasks;
 
 namespace Xedekop.Server.Controllers
 {
@@ -18,9 +20,13 @@ namespace Xedekop.Server.Controllers
         }
 
         [HttpGet("{pageIndex}/{pageSize}")]
-        public async Task<PaginatedList<Pokemon>> GetPaginatedPokemon(int pageIndex, int pageSize)
+        public async Task<IActionResult> GetPaginatedPokemon(int pageIndex, int pageSize)
         {
-            return await PaginatedList<Pokemon>.CreateAsync(_dbSet, pageIndex, pageSize);
+            var pokeRepo = _unitOfWork.GetRepository<IPokePokemonRepository>();
+
+            var results = await pokeRepo.GetPaginatedPokemon(pageIndex, pageSize);
+
+            return Ok(results);
         }
     }
 }
