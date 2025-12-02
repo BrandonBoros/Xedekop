@@ -30,6 +30,8 @@ namespace Xedekop.Server.Data.Repositories
                 {typeof(IPokeRepository<OrderItem>), dbContext => new PokeOrderItemRepository(dbContext, new Logger<PokeOrderItemRepository>(_loggerFactory)) },
 
                 {typeof(IPokePokemonRepository), dbContext => new PokePokemonRepository(dbContext, new Logger<PokePokemonRepository>(_loggerFactory)) },
+                {typeof(IPokeOrderItemRepository), dbContext => new PokeOrderItemRepository(dbContext, new Logger<PokeOrderItemRepository>(_loggerFactory)) },
+
             };
         }
         #endregion Properties

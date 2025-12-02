@@ -13,13 +13,13 @@ namespace Xedekop.Server.Data.Repositories
         /// <param name="logger">The logger for the PokeRepository.</param>
         public PokeOrderItemRepository(AppDbContext db, ILogger<PokeGenericRepository<OrderItem>> logger) : base(db, logger) { }
 
-        public OrderItem CreateOrderItem(Pokemon pokemon, decimal unitPrice)
+        public OrderItem CreateOrderItem(Pokemon pokemon)
         {
             OrderItem orderItem = new OrderItem()
             {
                 Pokemon = pokemon,
                 Quantity = 1,
-                UnitPrice = unitPrice,
+                UnitPrice = pokemon.Price,
             };
 
             _dbSet.AddAsync(orderItem);
@@ -27,14 +27,14 @@ namespace Xedekop.Server.Data.Repositories
             return orderItem;
         }
 
-        public OrderItem? UpdateOrderItem(int id, Pokemon? pokemon = null, decimal? unitPrice = null, int? quantity = null)
+        public OrderItem? UpdateOrderItem(int id, Pokemon? pokemon = null, int? quantity = null)
         {
             OrderItem? oldOrderItem = _dbSet.Find(GetByID(id));
             OrderItem newOrderItem;
 
-            if (oldOrderItem == null && pokemon != null && unitPrice != null)
+            if (oldOrderItem == null && pokemon != null)
             {
-                newOrderItem = CreateOrderItem(pokemon, (decimal)unitPrice);
+                newOrderItem = CreateOrderItem(pokemon);
             }
             else if (oldOrderItem == null)
             {
@@ -46,7 +46,7 @@ namespace Xedekop.Server.Data.Repositories
                 {
                     Pokemon = pokemon ?? oldOrderItem.Pokemon,
                     Quantity = quantity ?? oldOrderItem.Quantity,
-                    UnitPrice = unitPrice ?? oldOrderItem.UnitPrice,
+                    UnitPrice = pokemon?.Price ?? oldOrderItem!.UnitPrice,
                 };
 
                 _dbSet.Update(newOrderItem);
