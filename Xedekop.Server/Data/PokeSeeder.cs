@@ -103,23 +103,6 @@ namespace Xedekop.Server.Data
                 //Add the new list of products to the database
                 _db.Pokemons.AddRange(pokemons);
 
-                //Create a sample order 
-                var order = new Order()
-                {
-                    OrderDate = DateTime.Today,
-                    Items = new List<OrderItem>()
-                    {
-                        new OrderItem()
-                        {
-                            Pokemon = pokemons.First(),
-                            Quantity = 5,
-                            UnitPrice = pokemons.First().Price
-                        }
-                    }
-                };
-
-                _db.Orders.Add(order);
-
                 _db.SaveChanges();  //commit changes to the database (make permanent) 
             }
         }

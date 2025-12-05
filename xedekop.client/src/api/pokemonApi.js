@@ -6,6 +6,12 @@ export const getPokemons = async () => {
     return res.data;
 };
 
+//GET BY ID
+export const getPokemonById = async (id) => {
+    const res = await api.get(`/Pokemon/${id}`);
+    return res.data
+}
+
 // GET ALL FROM A PAGE
 export const getPaginatedPokemon = async (pageNumber, pageSize, filterType, sort) => {
     const res = await api.get(`/Pokemon/${pageNumber}/${pageSize}/${filterType}/${sort}`)

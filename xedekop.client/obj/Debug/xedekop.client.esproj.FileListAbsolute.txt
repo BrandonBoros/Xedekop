@@ -6,3 +6,4 @@ C:\Users\2359794\Source\Repos\Xedekop2\xedekop.client\obj\Debug\xedekop.client.e
 C:\Users\2377215\Source\Repos\Xedekop5\xedekop.client\obj\Debug\xedekop.client.esproj.CoreCompileInputs.cache
 C:\Users\2377215\Source\Repos\Xedekop6\xedekop.client\obj\Debug\xedekop.client.esproj.CoreCompileInputs.cache
 C:\Users\2359794\Source\Repos\Xedekop5\xedekop.client\obj\Debug\xedekop.client.esproj.CoreCompileInputs.cache
+C:\Users\2377215\Source\Repos\Xedekop7\xedekop.client\obj\Debug\xedekop.client.esproj.CoreCompileInputs.cache

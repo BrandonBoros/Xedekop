@@ -19,6 +19,7 @@
           "Microsoft.VisualStudio.Web.CodeGeneration": "8.0.7",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "8.0.7",
           "Newtonsoft.Json": "13.0.4",
+          "Newtonsoft.Json.Bson": "1.0.3",
           "PokeApiNet": "4.1.0",
           "Swashbuckle.AspNetCore": "6.6.1"
         },
@@ -1646,6 +1647,17 @@
           }
         }
       },
+      "Newtonsoft.Json.Bson/1.0.3": {
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.4"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Newtonsoft.Json.Bson.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.3.29904"
+          }
+        }
+      },
       "NuGet.Common/6.11.0": {
         "dependencies": {
           "NuGet.Frameworks": "6.11.0"
@@ -2933,6 +2945,13 @@
       "sha512": "sha512-pdgNNMai3zv51W5aq268sujXUyx7SNdE2bj1wZcWjAQrKMFZV260lbqYop1d2GM67JI1huLRwxo9ZqnfF/lC6A==",
       "path": "newtonsoft.json/13.0.4",
       "hashPath": "newtonsoft.json.13.0.4.nupkg.sha512"
+    },
+    "Newtonsoft.Json.Bson/1.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-bCcwagnHfYnhwQfY1criEcn6Hy9PtBuVnZu0pA8hmRhuR3jI/8WxVgoVAdNw9BJ3JHkxmWJzpj/AQy+PMMLqxg==",
+      "path": "newtonsoft.json.bson/1.0.3",
+      "hashPath": "newtonsoft.json.bson.1.0.3.nupkg.sha512"
     },
     "NuGet.Common/6.11.0": {
       "type": "package",

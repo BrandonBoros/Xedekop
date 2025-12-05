@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PokeApiNet;
 using Xedekop.Server.Data.Entities;
 using Xedekop.Server.Data.Interfaces;
 
@@ -13,51 +14,57 @@ namespace Xedekop.Server.Data.Repositories
         /// <param name="logger">The logger for the PokeRepository.</param>
         public PokeOrderItemRepository(AppDbContext db, ILogger<PokeGenericRepository<OrderItem>> logger) : base(db, logger) { }
 
-        public OrderItem CreateOrderItem(Pokemon pokemon)
+        public OrderItem CreateOrderItem(int pokemonId, decimal unitPrice)
         {
             OrderItem orderItem = new OrderItem()
             {
-                Pokemon = pokemon,
+                PokemonId = pokemonId,
                 Quantity = 1,
-                UnitPrice = pokemon.Price,
+                UnitPrice = unitPrice,
             };
 
             _dbSet.AddAsync(orderItem);
+            
+            _db.SaveChanges();
 
             return orderItem;
         }
 
-        public OrderItem? UpdateOrderItem(int id, Pokemon? pokemon = null, int? quantity = null)
+        public OrderItem? UpdateOrderItem(int id, int pokemonId, decimal? unitPrice, int? quantity = null)
         {
-            OrderItem? oldOrderItem = _dbSet.Find(GetByID(id));
+            OrderItem? oldOrderItem = _dbSet.Find(id);
+            Console.WriteLine(oldOrderItem.Id);
             OrderItem newOrderItem;
 
-            if (oldOrderItem == null && pokemon != null)
+
+            Console.WriteLine(oldOrderItem == null);
+            Console.WriteLine(unitPrice != null);
+
+            if (oldOrderItem == null && unitPrice != null)
             {
-                newOrderItem = CreateOrderItem(pokemon);
+                Console.WriteLine("YOOOOOOOOOOOOOOO");
+                newOrderItem = CreateOrderItem(pokemonId, (decimal)unitPrice);
             }
-            else if (oldOrderItem == null)
-            {
-                return null;
-            }
+            else if (oldOrderItem == null) return null;
             else
             {
-                newOrderItem = new OrderItem()
-                {
-                    Pokemon = pokemon ?? oldOrderItem.Pokemon,
-                    Quantity = quantity ?? oldOrderItem.Quantity,
-                    UnitPrice = pokemon?.Price ?? oldOrderItem!.UnitPrice,
-                };
+                oldOrderItem.PokemonId = pokemonId;
+                oldOrderItem.Quantity = quantity ?? oldOrderItem.Quantity;
+                oldOrderItem.UnitPrice = unitPrice ?? oldOrderItem!.UnitPrice;
 
-                _dbSet.Update(newOrderItem);
+                _dbSet.Update(oldOrderItem);
+
+                newOrderItem = oldOrderItem;
             }
+
+            _db.SaveChanges();
 
             return newOrderItem;
         }
 
         public OrderItem? DeleteOrderItem(int id)
         {
-            OrderItem? deletedOrderItem = _dbSet.Find(GetByID(id));
+            OrderItem? deletedOrderItem = _dbSet.Find(id);
 
             if (deletedOrderItem == null)
             {
@@ -65,6 +72,8 @@ namespace Xedekop.Server.Data.Repositories
             }
 
             _dbSet.Remove(deletedOrderItem);
+
+            _db.SaveChanges();
 
             return deletedOrderItem;
         }

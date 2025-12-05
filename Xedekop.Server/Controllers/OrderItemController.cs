@@ -17,17 +17,12 @@ namespace Xedekop.Server.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        [HttpPost("{pokemon}")]
-        public IActionResult CreateOrderItem(string pokemon)
+        [HttpPost("{pokemonId?}/{unitPrice}")]
+        public IActionResult CreateOrderItem(int pokemonId, decimal unitPrice)
         {
-            Pokemon? pokemonToAdd = JsonConvert.DeserializeObject<Pokemon>(pokemon);
-
-            if (pokemonToAdd is null)
-                return BadRequest("Couldn't create pokemon.");
-
             var orderItemRepo = _unitOfWork.GetRepository<IPokeOrderItemRepository>();
 
-            OrderItem? orderItem = orderItemRepo.CreateOrderItem(pokemonToAdd);
+            OrderItem? orderItem = orderItemRepo.CreateOrderItem(pokemonId, unitPrice);
 
             if (orderItem is null)
                 return BadRequest("Couldn't create OrderItem.");
@@ -36,14 +31,12 @@ namespace Xedekop.Server.Controllers
         }
 
 
-        [HttpPut("{orderItemId}/{pokemon?}/{quantity?}")]
-        public IActionResult CreateOrderItem(int orderItemId, string? pokemon, int? quantity)
+        [HttpPut("{orderItemId}/{pokemonId?}/{unitPrice?}/{quantity?}")]
+        public IActionResult UpdateOrderItem(int orderItemId, int pokemonId, decimal? unitPrice, int? quantity)
         {
-            Pokemon? updatedPokemon = JsonConvert.DeserializeObject<Pokemon>(pokemon);
-
             var orderItemRepo = _unitOfWork.GetRepository<IPokeOrderItemRepository>();
 
-            OrderItem? orderItem = orderItemRepo.UpdateOrderItem(orderItemId, updatedPokemon, quantity);
+            OrderItem? orderItem = orderItemRepo.UpdateOrderItem(orderItemId, pokemonId, unitPrice, quantity);
 
             if (orderItem is null)
                 return BadRequest("Couldn't create OrderItem.");
