@@ -4,7 +4,7 @@ import { Button } from 'primereact/button';
 import { Skeleton } from 'primereact/skeleton';
 import { classNames } from 'primereact/utils';
 import "../styles/shop.css";
-import { getOrderItems } from '../api/orderItemApi.js';
+import { getOrderItems, deleteOrderItem, updateOrderItem } from '../api/orderItemApi.js';
 import { getPokemonById } from '../api/pokemonApi';
 
 export default function BasketItems() {
@@ -57,11 +57,28 @@ export default function BasketItems() {
                                 <span className={`type-chip type-${pokemon.type2}`}>{pokemon.type2}</span>
                             )}
                         </div>
-                    </div>
+                    </div>                  
 
                     <div className="flex flex-column align-items-end gap-3">
                         <span className="text-2xl font-semibold">${order.unitPrice * order.quantity}</span>
-                        <Button icon="pi pi-shopping-cart" className="p-button-rounded p-button-sm" />
+
+                        <div className="flex align-items-center gap-2">
+                            <Button
+                                icon="pi pi-minus"
+                                className="p-button-rounded p-button-secondary p-button-sm"
+                                onClick={() => handleQuantityChange(order, -1)}
+                            />
+                            <span className="text-xl font-semibold">{order.quantity}</span>
+                            <Button
+                                icon="pi pi-plus"
+                                className="p-button-rounded p-button-secondary p-button-sm"
+                                onClick={() => handleQuantityChange(order, +1)}
+                            />
+                        </div>
+
+                        <Button icon="pi pi-trash" severity="danger" className="p-button-rounded p-button-sm"
+                            onClick={() => handleRemove(order.id)}
+                        />
                     </div>
                 </div>
             </div>
@@ -75,6 +92,40 @@ export default function BasketItems() {
         return listItem(item.order, item.pokemon, index);
     };
 
+    const handleRemove = async (id) => {
+        await deleteOrderItem(id);
+
+        setOrderItems(previous => previous.filter(item => item.id !== id));
+
+        setPokemons(previous => previous.filter(pair => pair.order.id !== id));
+    };
+
+    const handleQuantityChange = async (order, delta) => {
+        const newQuantity = order.quantity + delta;
+
+        if (newQuantity < 1) return; 
+
+        await updateOrderItem(
+            order.id,
+            order.pokemonId,
+            order.unitPrice,
+            newQuantity
+        );
+
+        setOrderItems(prev =>
+            prev.map(item =>
+                item.id === order.id ? { ...item, quantity: newQuantity } : item
+            )
+        );
+
+        setPokemons(prev =>
+            prev.map(pair =>
+                pair.order.id === order.id
+                    ? { ...pair, order: { ...pair.order, quantity: newQuantity } }
+                    : pair
+            )
+        );
+    };
 
     return (
         <div>
