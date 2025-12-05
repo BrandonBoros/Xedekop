@@ -16,7 +16,7 @@ namespace Xedekop.Server.Data.Entities
         /// <summary>
         /// The "Product" the user is buying.
         /// </summary>
-        public Pokemon Pokemon { get; set; }
+        public int PokemonId { get; set; }
 
         /// <summary>
         /// How much of the Product the user is buying.
@@ -27,10 +27,5 @@ namespace Xedekop.Server.Data.Entities
         /// The cost of the Product alone.
         /// </summary>
         public decimal UnitPrice { get; set; }
-
-        /// <summary>
-        /// The Order this item belongs to.
-        /// </summary>
-        public Order Order { get; set; }
     }
 }

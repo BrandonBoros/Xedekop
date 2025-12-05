@@ -7,6 +7,7 @@ import { classNames } from 'primereact/utils';
 import { getPaginatedPokemon } from '../api/pokemonApi.js';
 import { Paginator } from 'primereact/paginator';
 import "../styles/shop.css";
+import { createOrderItem, updateOrderItem } from '../api/orderItemApi.js';
 
 export default function ShopItems() {
     const [numberOfPokemon, setNumberOfPokemon] = useState(1025);
@@ -152,7 +153,11 @@ export default function ShopItems() {
 
                 <div className="flex justify-content-between align-items-center">
                     <span className="text-2xl font-semibold">${product.price}</span>
-                    <Button icon="pi pi-shopping-cart" className="p-button-rounded p-button-sm" />
+                    <Button icon="pi pi-shopping-cart" className="p-button-rounded p-button-sm" onClick={
+                        () => {
+                            createOrderItem(product.id, product.price)
+                        }
+                    } />
                 </div>
             </div>
         </div>
